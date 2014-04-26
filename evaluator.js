@@ -81,13 +81,13 @@ function eval_math(ast, env) {
 		case '-':
 			return o1 - o2;
 		case '/':
-			return o1 / o2;
+			return Math.floor(o1 / o2);
 		case '*':
 			return o1 * o2;
 		case 'mod':
 			return o1 % o2;
 		case '>':
-			return o1 > o1;
+			return o1 > o2;
 	}
 }
 

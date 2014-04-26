@@ -1,7 +1,9 @@
 var evaluator = require('./evaluator');
+var parser = require('./parser');
 var Environment = require('./environment');
 var assert = require('assert');
 var evaluate = evaluator.evaluate;
+var parse = parser.parse;
 var equal = assert.equal;
 var deepEqual = assert.deepEqual;
 
@@ -26,3 +28,16 @@ equal(evaluate(['atom', ['quote', [1, 2]]], new Environment()), false);
 // eq function
 equal(evaluate(['eq', 1, 1], new Environment()), true);
 equal(evaluate(['eq', 1, 2], new Environment()), false);
+equal(evaluate(parse("(eq 'foo 'foo)"), new Environment()), true);
+equal(evaluate(parse("(eq 'foo 'bar)"), new Environment()), false);
+
+// math functions
+equal(evaluate(['+', 2, 2], new Environment()), 4);
+equal(evaluate(['-', 2, 1], new Environment()), 1);
+equal(evaluate(['/', 6, 2], new Environment()), 3);
+equal(evaluate(['/', 7, 2], new Environment()), 3);
+equal(evaluate(['*', 2, 3], new Environment()), 6);
+equal(evaluate(['mod', 7, 2], new Environment()), 1);
+equal(evaluate(['>', 7, 2], new Environment()), true);
+equal(evaluate(['>', 2, 2], new Environment()), false);
+equal(evaluate(['>', 2, 3], new Environment()), false);
