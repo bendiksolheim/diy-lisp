@@ -1,4 +1,4 @@
-var Closure = require('closure');
+var Closure = require('./closure');
 
 function isSymbol(x) {
 	return typeof x === 'string';
@@ -26,3 +26,12 @@ function isAtom(x) {
 		|| isBoolean(x)
 		|| isClosure(x);
 }
+
+module.exports = {
+	isSymbol: isSymbol,
+	isList: isList,
+	isBoolean: isBoolean,
+	isInteger: isInteger,
+	isClosure: isClosure,
+	isAtom: isAtom,
+};

@@ -4,4 +4,4 @@ function Closure(env, params, body) {
 	this.body = body;
 }
 
-exports.module = Closure;
+module.exports = Closure;
