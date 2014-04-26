@@ -30,7 +30,7 @@ function evaluateList(ast, env) {
 	} else if (form(ast, 'if')) {
 			return eval_if(ast, env);
 	} else if (form(ast, 'define')) {
-			return eval_env(ast, env);
+			return extend_env(ast, env);
 	} else if (form(ast, 'lambda')) {
 			return eval_lambda(ast, env);
 	} else if (form(ast, 'cons')) {

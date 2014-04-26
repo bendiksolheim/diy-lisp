@@ -5,7 +5,9 @@ function clone(obj) {
     for (var attr in obj) {
         if (obj.hasOwnProperty(attr)) copy[attr] = clone(obj[attr]);
     }*/
-    return extend({}, obj);
+    var copy = {}
+    extend(copy, obj);
+    return copy;
 }
 
 function extend(obj, vars) {
