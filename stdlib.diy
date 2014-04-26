@@ -1,0 +1,109 @@
+(define not
+    (lambda (b)
+        (if b #f #t)))
+(define nil '())
+
+(define or
+    (lambda (a b)
+        (if (eq a #t)
+            #t
+            (if (eq b #t)
+                #t
+                #f))))
+
+(define and
+    (lambda (a b)
+        (if (eq a #f)
+            #f
+            (if (eq b #f)
+                #f
+                #t))))
+
+(define xor
+    (lambda (a b)
+        (if (and a b)
+            #f
+            (if (or a b)
+                #t
+                #f))))
+
+(define >=
+    (lambda (a b)
+        (if (> a b)
+            #t
+            (if (eq a b)
+                #t
+                #f))))
+
+(define <=
+    (lambda (a b)
+        (not (> a b))))
+
+(define <
+    (lambda (a b)
+        (not (>= a b))))
+
+(define sum
+    (lambda (lst)
+        (if (empty lst)
+            0
+            (+ (head lst) (sum (tail lst))))))
+
+(define length
+    (lambda (lst)
+        (if (empty lst)
+            0
+            (+ 1  (length (tail lst))))))
+
+(define append
+    (lambda (fst snd)
+        (if (empty fst)
+            snd
+            (cons (head fst) (append (tail fst) snd)))))
+            
+(define filter
+    (lambda (f lst)
+        (if (empty lst)
+            nil
+            (if (f (head lst))
+                (cons (head lst) (filter f (tail lst)))
+                (filter f (tail lst))))))
+
+(define map
+    (lambda (f lst)
+        (if (empty lst)
+            nil
+            (cons (f (head lst)) (map f (tail lst))))))
+
+(define reverse-aux
+    (lambda (lst acc)
+        (if (empty lst)
+            acc
+            (reverse-aux (tail lst) (cons (head lst) acc)))))
+
+(define reverse
+    (lambda (lst)
+        (reverse-aux lst nil)))
+
+(define range
+    (lambda (from to)
+        (if (> from to)
+            nil
+            (cons from (range (+ from 1) to)))))
+            
+(define less
+    (lambda (lst pivot)
+        (filter (lambda (a) (<= a pivot)) lst)))
+
+(define greater
+    (lambda (lst pivot)
+        (filter (lambda (a) (> a pivot)) lst)))
+
+(define sort
+    (lambda (lst)
+        (if (empty lst)
+            nil
+            (append
+                (sort (less (tail lst) (head lst)))
+                (cons (head lst)
+                      (sort (greater (tail lst) (head lst))))))))

@@ -83,7 +83,22 @@ function trim(str) {
     return str.replace(/^\s+|\s+$/g, '');
 }
 
+function unparse(ast) {
+    if (isBoolean(ast)) {
+        return ast ? '#t' : '#f';
+    } else if (isList(ast)) {
+        if (ast.length > 0 && ast[0] === 'quote')
+            return "'" + unparse(ast[1]);
+        else
+            return "(" + ast.map(function(a) { return unparse(a); }).join(" ") + ")";
+    }
+
+    return ast + "";
+}
+
 module.exports = {
     parse: parse,
+    parse_multiple: parse_multiple,
+    unparse: unparse,
     first_exp: first_exp
 }
