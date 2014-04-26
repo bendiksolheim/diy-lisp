@@ -41,3 +41,4 @@ equal(evaluate(['mod', 7, 2], new Environment()), 1);
 equal(evaluate(['>', 7, 2], new Environment()), true);
 equal(evaluate(['>', 2, 2], new Environment()), false);
 equal(evaluate(['>', 2, 3], new Environment()), false);
+assert.throws(evaluate(parse("(+ 1 'foo)"), new Environment()), Error);
