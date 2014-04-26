@@ -12,8 +12,9 @@ function evaluate(ast, env) {
 		return evaluateList(ast, env);
 	else if (isBoolean(ast))
 		return ast;
-	else if (isSymbol(ast))
+	else if (isSymbol(ast)) {
 		return env.lookup(ast);
+	}
 
 	return ast;
 }
@@ -49,7 +50,8 @@ function evaluateList(ast, env) {
 		return lst.length === 0;
 	} else if (isSymbol(ast[0]) || isList(ast[0])) {
 		var closure = evaluate(ast[0], env);
-		var newAst = ast.slice(1).unshift(closure);
+		var newAst = ast.slice(1);
+		newAst.unshift(closure);
 		return eval_functionCall(newAst, env);
 	} else if (isClosure(ast[0])) {
 		return eval_functionCall(ast, env);
@@ -112,7 +114,7 @@ function eval_lambda(ast, env) {
 function eval_functionCall(ast, env) {
 	var closure = ast[0];
 	arguments = ast.slice(1).map(function(arg) { return evaluate(arg, env); });
-	if (arguments.length != arguments.closure.length)
+	if (arguments.length != closure.params.length)
 		throw new Error("Wrong number of arguments. Expected " + closure.params.length + ", got " + arguments.length);
 
 	env = closure.env.extend(merge(closure.params, arguments));
