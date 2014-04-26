@@ -81,3 +81,32 @@ e11 = new Environment();
 evaluate(parse("(define add (lambda (x y) (+ x y)))"), e11);
 equal(isClosure(e11.lookup('add')), true);
 equal(evaluate(parse("(add 1 2)"), e11), 3);
+
+ast = parse("((lambda (x) x) 42)");
+equal(evaluate(ast, new Environment()), 42);
+
+ast = parse("((if #f wont-evaluate-this-branch (lambda (x) (+ x y))) 2)");
+var e12 = new Environment({'y': 3});
+equal(evaluate(ast, e12), 5);
+
+var e13 = new Environment();
+evaluate(parse("(define my-fn (lambda (x) (if (eq x 0) 42 (my-fn (- x 1)))))"), e13);
+equal(evaluate(parse("(my-fn 0)"), e13), 42);
+equal(evaluate(parse("(my-fn 10)"), e13), 42);
+
+deepEqual(evaluate(parse("'(1 2 3 #t)"), new Environment()), [1, 2, 3, true]);
+
+deepEqual(evaluate(parse("(cons 0 '(1 2 3))"), new Environment()), parse("(0 1 2 3)"));
+
+deepEqual(evaluate(parse("(cons 3 (cons (- 4 2) (cons 1 '())))"), new Environment()), parse("(3 2 1)"));
+
+equal(evaluate(parse("(head (quote (1 2 3 4 5)))"), new Environment()), 1)
+
+assert.throws(function() { evaluate(parse("(head (quote ()))"), new Environment());}, Error);
+
+deepEqual(evaluate(parse("(tail '(1 2 3))"), new Environment()), parse("(2 3)"));
+
+equal(evaluate(parse("(empty '(1 2 3))"), new Environment()), false);
+equal(evaluate(parse("(empty '(1))"), new Environment()), false);
+equal(evaluate(parse("(empty '())"), new Environment()), true);
+equal(evaluate(parse("(empty (tail '(1)))"), new Environment()), true);

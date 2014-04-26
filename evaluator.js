@@ -21,21 +21,23 @@ function evaluate(ast, env) {
 
 function evaluateList(ast, env) {
 	if (form(ast, 'quote')) {
-			return ast[1];
+		return ast[1];
 	} else if (form(ast, 'atom')) {
-			return isAtom(evaluate(ast[1], env));
+		return isAtom(evaluate(ast[1], env));
 	} else if (form(ast, 'eq')) {
-			return eval_eq(ast, env);
+		return eval_eq(ast, env);
 	} else if (form(ast, '+', '-', '/', '*', 'mod', '>')) {
-			return eval_math(ast, env);
+		return eval_math(ast, env);
 	} else if (form(ast, 'if')) {
-			return eval_if(ast, env);
+		return eval_if(ast, env);
 	} else if (form(ast, 'define')) {
-			return extend_env(ast, env);
+		return extend_env(ast, env);
 	} else if (form(ast, 'lambda')) {
-			return eval_lambda(ast, env);
+		return eval_lambda(ast, env);
 	} else if (form(ast, 'cons')) {
-			return [evaluate(ast[1], env)].push(evaluate(ast[2], env));
+		var rest = evaluate(ast[2], env);
+		rest.unshift(evaluate(ast[1], env));
+		return rest;
 	} else if (form(ast, 'head')) {
 		var lst = evaluate(ast[1], env);
 		if (lst.length === 0)
