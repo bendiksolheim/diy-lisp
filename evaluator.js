@@ -1,4 +1,6 @@
+var Closure = require('./closure');
 var types = require('./types');
+
 // Get all the is-methods into this module
 for (var m in types) {
 	if (types.hasOwnProperty(m))
@@ -99,18 +101,44 @@ function eval_if(ast, env) {
 }
 
 function eval_lambda(ast, env) {
+	if (!isList(ast[1]))
+		throw new Error(ast[1] + " is not a list");
+	if (ast.length != 3)
+		throw new Error("Wrong number of arguments: " + ast);
 
+	return new Closure(env, ast[1], ast[2]);
 }
 
 function eval_functionCall(ast, env) {
+	var closure = ast[0];
+	arguments = ast.slice(1).map(function(arg) { return evaluate(arg, env); });
+	if (arguments.length != arguments.closure.length)
+		throw new Error("Wrong number of arguments. Expected " + closure.params.length + ", got " + arguments.length);
 
+	env = closure.env.extend(merge(closure.params, arguments));
+	return evaluate(closure.body, env);
 }
 
 function extend_env(ast, env) {
+	if (ast.length !== 3)
+		throw new Error('Wrong number of arguments');
+	if (!isSymbol(ast[1]))
+		throw new Error('Non-symbol: ' + ast[1]);
 
+	env.set(ast[1], evaluate(ast[2], env));
+	return ast[1];
+}
+
+function merge(a1, a2) {
+	var o = {};
+	for (var i = 0; i < a1.length; i++) {
+		o[a1[i]] = a2[i];
+	}
+	return o;
 }
 
 module.exports = {
 	form: form,
+	merge: merge,
 	evaluate: evaluate
 };

@@ -4,6 +4,7 @@ var Environment = require('./environment');
 var assert = require('assert');
 var evaluate = evaluator.evaluate;
 var parse = parser.parse;
+var merge = evaluator.merge;
 var equal = assert.equal;
 var deepEqual = assert.deepEqual;
 
@@ -42,3 +43,16 @@ equal(evaluate(['>', 7, 2], new Environment()), true);
 equal(evaluate(['>', 2, 2], new Environment()), false);
 equal(evaluate(['>', 2, 3], new Environment()), false);
 assert.throws(evaluate(parse("(+ 1 'foo)"), new Environment()), Error);
+
+// merge
+deepEqual(merge(['a', 'b'], [1, 2]), {'a': 1, 'b': 2});
+
+// nested expression
+equal(evaluate(parse('(eq #f (> (- (+ 1 3) (* 2 (mod 7 4))) 4))'), new Environment()), true);
+
+// if
+equal(evaluate(parse('(if #t 42 1000)'), new Environment()), 42);
+equal(evaluate(parse('(if #f 42 1000)'), new Environment()), 1000);
+equal(evaluate(parse('(if #f (this should not be evaluated) 42)'), new Environment()), 42);
+equal(evaluate(parse('(if (> 1 2) (- 1000 1) (+ 40 (- 3 1)))'), new Environment()), 42);
+
