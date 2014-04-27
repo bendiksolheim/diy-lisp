@@ -14,7 +14,8 @@
 <script type="text/javascript">
 
 	var env = new diy.Environment();
-	diy.Evaluator.evaluate(diy.Parser.parse(diy.stdlib), env);
+	var parsed = diy.Parser.parse_multiple(diy.stdlib);
+	parsed.map(function(ast) { return diy.Evaluator.evaluate(ast, env); });
 
 	document.querySelector('#input').addEventListener('keypress', function(event) {
 		if (event.keyCode === 13) {

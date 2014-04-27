@@ -1,5 +1,5 @@
 var interpreter = require('./interpreter');
-var Environment = require('./environment');
+var Environment = require('./environment').Environment;
 var util = require('util');
 var log = function(s) {
 	console.log(util.inspect(s, {showHidden: false, depth: null}));
