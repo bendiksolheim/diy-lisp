@@ -1,5 +1,5 @@
 var assert = require('assert');
-var parser = require('./parser');
+var parser = require('../parser');
 var util = require('util');
 var parse = parser.parse;
 var first_exp = parser.first_exp;
