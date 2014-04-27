@@ -23,7 +23,7 @@
 	});
 
 	function evaluate(str) {
-		console.log(diy.Parser.unparse(diy.Evaluator.evaluate(diy.Parser.parse(str), env)));
+		var output = document.querySelector('#output').value = diy.Parser.unparse(diy.Evaluator.evaluate(diy.Parser.parse(str), env));
 	}
 </script>
 </body>
