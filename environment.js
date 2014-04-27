@@ -33,6 +33,7 @@ Environment.prototype.lookup = function(v) {
 	if (!this.vars.hasOwnProperty(v))
 		throw new Error('Could not find symbol ' + v + ' in environment');
 
+	// We ABSOLUTELY have to clone before returning, as returning object pointers makes all kinds of things go wrong
 	return clone(this.vars[v]);
 };
 
