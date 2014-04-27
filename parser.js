@@ -1,4 +1,10 @@
-var _ = require('./util');
+function isNumber(n) {
+    return /^\d+$/.test(n);
+}
+
+function toNumber(n) {
+    return parseInt(n, 10);
+}
 
 function parse(source) {
     source = trim(source);
@@ -6,8 +12,8 @@ function parse(source) {
         return true;
     else if (source === '#f')
         return false;
-    else if (_.is_number(source))
-        return _.number(source);
+    else if (isNumber(source))
+        return toNumber(source);
     else if (source[0] === '(')
         return to_list(source);
     else if (source[0] === '\'')
