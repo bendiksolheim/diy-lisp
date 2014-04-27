@@ -1,6 +1,6 @@
 var fs = require('fs');
-var parser = require('./parser');
-var evaluator = require('./evaluator');
+var parser = require('./parser').Parser;
+var evaluator = require('./evaluator').Evaluator;
 
 function interpret(source, env) {
 	return parser.unparse(evaluator.evaluate(parser.parse(source), env));

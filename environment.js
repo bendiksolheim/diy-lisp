@@ -1,49 +1,52 @@
-function clone(obj) {
-	if (null == obj || "object" != typeof obj) return obj;
+(function(diy) {
 
-	if (obj instanceof Array) {
-        var copy = [];
-        for (var i = 0, len = obj.length; i < len; i++) {
-            copy[i] = clone(obj[i]);
-        }
-        return copy;
-    }
+	function clone(obj) {
+		if (null == obj || "object" != typeof obj) return obj;
 
-    var copy = new obj.constructor;
-    extend(copy, obj);
-    return copy;
-}
+		if (obj instanceof Array) {
+	        var copy = [];
+	        for (var i = 0, len = obj.length; i < len; i++) {
+	            copy[i] = clone(obj[i]);
+	        }
+	        return copy;
+	    }
 
-function extend(obj, vars) {
-	for (var v in vars) {
-		if (vars.hasOwnProperty(v))
-			obj[v] = vars[v];
+	    var copy = new obj.constructor;
+	    extend(copy, obj);
+	    return copy;
 	}
-}
 
-function Environment(vars) {
-	this.vars = vars || {};
-}
+	function extend(obj, vars) {
+		for (var v in vars) {
+			if (vars.hasOwnProperty(v))
+				obj[v] = vars[v];
+		}
+	}
 
-Environment.prototype.lookup = function(v) {
-	if (!this.vars.hasOwnProperty(v))
-		throw new Error('Could not find symbol ' + v + ' in environment');
+	function Environment(vars) {
+		this.vars = vars || {};
+	}
 
-	// We ABSOLUTELY have to clone before returning, as returning object pointers makes all kinds of things go wrong
-	return clone(this.vars[v]);
-};
+	Environment.prototype.lookup = function(v) {
+		if (!this.vars.hasOwnProperty(v))
+			throw new Error('Could not find symbol ' + v + ' in environment');
 
-Environment.prototype.extend = function(vars) {
-	var newEnv = clone(this.vars);
-	extend(newEnv, vars);
-	return new Environment(newEnv);
-};
+		// We ABSOLUTELY have to clone before returning, as returning object pointers makes all kinds of things go wrong
+		return clone(this.vars[v]);
+	};
 
-Environment.prototype.set = function(v, val) {
-	if (this.vars.hasOwnProperty(v))
-		throw new Error('Property ' + v + ' already defined');
+	Environment.prototype.extend = function(vars) {
+		var newEnv = clone(this.vars);
+		extend(newEnv, vars);
+		return new Environment(newEnv);
+	};
 
-	this.vars[v] = val;
-};
+	Environment.prototype.set = function(v, val) {
+		if (this.vars.hasOwnProperty(v))
+			throw new Error('Property ' + v + ' already defined');
 
-module.exports = Environment;
+		this.vars[v] = val;
+	};
+
+	diy.Environment = Environment;
+})(typeof exports === 'undefined' ? this['diy'] = this['diy'] || {} : exports);
