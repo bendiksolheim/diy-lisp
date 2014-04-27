@@ -4,13 +4,12 @@
 	<title>LISP</title>
 </head>
 <body>
-<input type="text" id="input" style="width: 300px;">
-<script type="text/javascript" src="stdlib.js"></script>
-<script type="text/javascript" src="closure.js"></script>
-<script type="text/javascript" src="environment.js"></script>
-<script type="text/javascript" src="types.js"></script>
-<script type="text/javascript" src="parser.js"></script>
-<script type="text/javascript" src="evaluator.js"></script>
+<label for="input">Input</label>
+<input type="text" id="input" style="width: 300px;" name="input">
+<br />
+<label for="output">Output</label>
+<input type="text" id="output" style="width: 300px;" name="output">
+<script type="text/javascript" src="lisp-latest.min.js"></script>
 <script type="text/javascript">
 
 	var env = new diy.Environment();
@@ -24,7 +23,7 @@
 	});
 
 	function evaluate(str) {
-		console.log(diy.Parser.unparse(diy.Evaluator.evaluate(diy.Parser.parse(str), env)));
+		var output = document.querySelector('#output').value = diy.Parser.unparse(diy.Evaluator.evaluate(diy.Parser.parse(str), env));
 	}
 </script>
 </body>
