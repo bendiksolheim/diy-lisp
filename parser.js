@@ -34,11 +34,8 @@ function to_list(source) {
     var exps = split_exps(source.substr(1, end-1));
     exps = exps.map(function(exp) { return parse(exp); });
     return exps;
-    /*return split_exps(source.substr(1, end-1))
-        .map(function(exp) { return parse(exp);});*/
 }
 
-// works
 function matching_paren(source) {
     if (source[0] !== '(')
         throw new Error("Expected '(' as first character, got " + source);

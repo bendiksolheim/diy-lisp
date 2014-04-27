@@ -13,5 +13,5 @@ function interpret(s) {
 
 interpret("(map (lambda (n) (* 10 n)) (range 5 10))");
 interpret("(map (lambda (n) (* 10 n)) (range 1 5))");
-//interpret("(append '(1 2) '(3 4))");
+interpret("(append '(1 2) '(3 4))");
 interpret("(sort '(99 1000 0 25 87 500))");

@@ -9,10 +9,6 @@ function clone(obj) {
         return copy;
     }
 
-    /*var copy = {};
-    for (var attr in obj) {
-        if (obj.hasOwnProperty(attr)) copy[attr] = clone(obj[attr]);
-    }*/
     var copy = new obj.constructor;
     extend(copy, obj);
     return copy;
@@ -35,7 +31,6 @@ Environment.prototype.lookup = function(v) {
 
 	// We ABSOLUTELY have to clone before returning, as returning object pointers makes all kinds of things go wrong
 	return clone(this.vars[v]);
-	//return this.vars[v];
 };
 
 Environment.prototype.extend = function(vars) {
