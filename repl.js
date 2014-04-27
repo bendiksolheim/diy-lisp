@@ -8,8 +8,10 @@ var log = function(s) {
 function interpret(s) {
 	var env = new Environment();
 	interpreter.interpretFile('stdlib.diy', env);
-	console.log("=============");
 	console.log(interpreter.interpret(s, env));
 }
 
-interpret("(map (lambda (n) (* 10 n)) (range 5 6))");
+//interpret("(map (lambda (n) (* 10 n)) (range 5 10))");
+//interpret("(map (lambda (n) (* 10 n)) (range 1 5))");
+//interpret("(append '(1 2) '(3 4))");
+interpret("(sort '(99 1000 0 25 87 500))");

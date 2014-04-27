@@ -1,6 +1,14 @@
 function clone(obj) {
 	if (null == obj || "object" != typeof obj) return obj;
 
+	if (obj instanceof Array) {
+        var copy = [];
+        for (var i = 0, len = obj.length; i < len; i++) {
+            copy[i] = clone(obj[i]);
+        }
+        return copy;
+    }
+
     /*var copy = {};
     for (var attr in obj) {
         if (obj.hasOwnProperty(attr)) copy[attr] = clone(obj[attr]);
@@ -25,7 +33,7 @@ Environment.prototype.lookup = function(v) {
 	if (!this.vars.hasOwnProperty(v))
 		throw new Error('Could not find symbol ' + v + ' in environment');
 
-	return this.vars[v];
+	return clone(this.vars[v]);
 };
 
 Environment.prototype.extend = function(vars) {
