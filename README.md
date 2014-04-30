@@ -18,4 +18,4 @@ Either clone this repository and open `index.html` in the browser, or run it wit
 
 (Although the intention was to create an actual REPL, I found out I was too lazy to finish it)
 
-[Assert](https://www.npmjs.org/package/assert) is required to run the tests in the `test` folder, so be sure to `npm install` before running them.
+Requires [Assert](https://www.npmjs.org/package/assert) to run the tests in the `test` folder, so be sure to `npm install` before running them.
