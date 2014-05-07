@@ -10,6 +10,7 @@
 	}
 
 	function evaluate(ast, env) {
+		console.log(ast);
 		if (isList(ast))
 			return evaluateList(ast, env);
 		else if (isBoolean(ast))
@@ -30,6 +31,8 @@
 			return eval_eq(ast, env);
 		} else if (form(ast, '+', '-', '/', '*', 'mod', '>')) {
 			return eval_math(ast, env);
+		} else if (form(ast, ':')) {
+			return eval_expansion(ast, env);
 		} else if (form(ast, 'if')) {
 			return eval_if(ast, env);
 		} else if (form(ast, 'define')) {
@@ -97,6 +100,24 @@
 			case '>':
 				return o1 > o2;
 		}
+	}
+
+	function eval_expansion(ast, env) {
+		var letter = ast[1][0];
+		if (letter !== ast[2][0])
+			throw new Error("Cannot expand rows, only columns.");
+		
+		var from = parseInt(ast[1][1], 10);
+		var to = parseInt(ast[2][1], 10);
+		if (from > to) 
+			throw new Error("Cannot expand expression (: " + ast[1] + " " + ast[2] + "). Lower value must be first.");
+
+		var a = [];
+		for (var i = from; i <= to; i++) {
+			a.push(env.lookup(letter + i));
+		}
+		console.log(a);
+		return evaluate(['quote', a], env);
 	}
 
 	function eval_if(ast, env) {
