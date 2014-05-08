@@ -10,7 +10,6 @@
 	}
 
 	function evaluate(ast, env) {
-		console.log(ast);
 		if (isList(ast))
 			return evaluateList(ast, env);
 		else if (isBoolean(ast))
@@ -116,7 +115,6 @@
 		for (var i = from; i <= to; i++) {
 			a.push(env.lookup(letter + i));
 		}
-		console.log(a);
 		return evaluate(['quote', a], env);
 	}
 
