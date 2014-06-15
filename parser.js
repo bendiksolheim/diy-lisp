@@ -8,6 +8,14 @@
         return parseInt(n, 10);
     }
 
+    function toCharacter(n) {
+        return String.fromCharCode(n + 65);
+    }
+
+    function fromCharacter(c) {
+        return c.charCodeAt() - 65;
+    }
+
     function parse(source) {
         source = trim(source);
         if (source === '#t')
@@ -20,6 +28,8 @@
             return to_list(source);
         else if (source[0] === '\'')
             return ['quote', parse(source.substr(1))];
+        else if (source[0] === ':')
+            return ['quote', expand(source.substr(1))];
         else
             return source;
     }
@@ -32,10 +42,45 @@
         var end = matching_paren(source);
         if (end === source.length)
             throw new Error("Expected EOF: " + source);
-        
+
         var exps = split_exps(source.substr(1, end-1));
         exps = exps.map(function(exp) { return parse(exp); });
         return exps;
+    }
+
+    function expand(source) {
+        var end = matching_paren(source);
+        if (end === source.length)
+            throw new Error("Expected EOF: " + source);
+
+        var exps = split_exps(source.substr(1, end-1));
+        if (exps.length !== 2)
+            throw new Error("Expansion only takes two parameters: " + source);
+        var from = exps[0];
+        var to = exps[1];
+
+        if (isNumber(from) && isNumber(to))
+            return expandNumberRange(toNumber(from), toNumber(to));
+        
+        return expandCellRange(from, to);
+    }
+
+    function expandNumberRange(from, to) {
+        var a = [];
+        while (from <= to)
+            a.push(from++);
+        return a;
+    }
+
+    function expandCellRange(from, to) {
+        var letter = /[A-Za-z]+/;
+        var number = /[0-9]+/;
+        var fromLetter = letter.exec(from)[0];
+        var toLetter = letter.exec(to)[0];
+        from = number.exec(from)[0];
+        to = number.exec(to)[0];
+        var range = expandNumberRange(from, to).map(function(n) { return fromLetter + n; });
+        return range;
     }
 
     function matching_paren(source) {
@@ -69,7 +114,7 @@
 
     function first_exp(source) {
         source = trim(source);
-        if (source[0] === '\'') {
+        if (source[0] === '\'' || source[0] === ':') {
             var tmp = first_exp(source.substr(1));
             return {exp: source[0] + tmp.exp, rest: tmp.rest};
         } else if (source[0] === '(') {
