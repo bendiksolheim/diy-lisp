@@ -36,12 +36,13 @@
 	};
 
 	Environment.prototype.extend = function(vars) {
-		var newEnv = clone(this.vars);
+		var newEnv = this.vars;
 		extend(newEnv, vars);
 		return new Environment(newEnv);
 	};
 
 	Environment.prototype.set = function(v, val) {
+		console.log("SET: " + v + ", " + val);
 		if (this.vars.hasOwnProperty(v))
 			throw new Error('Property ' + v + ' already defined');
 
