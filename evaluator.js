@@ -9,6 +9,12 @@
 			this[m] = types[m];
 	}
 
+	function evaluate_multiple(ast, env) {
+		ast.map(function(ast) {
+			evaluate(ast, env);
+		});
+	}
+
 	function evaluate(ast, env) {
 		if (isList(ast))
 			return evaluateList(ast, env);
@@ -146,7 +152,8 @@
 	diy.Evaluator = {
 		form: form,
 		merge: merge,
-		evaluate: evaluate
+		evaluate: evaluate,
+		evaluate_multiple: evaluate_multiple
 	};
 
 })(typeof exports === 'undefined' ? this['diy'] = this['diy'] || {} : exports);
