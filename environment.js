@@ -42,7 +42,6 @@
 	};
 
 	Environment.prototype.set = function(v, val) {
-		console.log("SET: " + v + ", " + val);
 		if (this.vars.hasOwnProperty(v))
 			throw new Error('Property ' + v + ' already defined');
 
